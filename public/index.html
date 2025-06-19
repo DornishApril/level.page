@@ -174,10 +174,18 @@
             return;
           }
 
+          if (data > 1000) {
+            valueEl.textContent = "--";
+            statusEl.textContent = "❌ Distance too high";
+            display.classList.remove("too-close");
+            warningEl.style.display = "none";
+            return;
+          }
+
           valueEl.textContent = data.toFixed(1);
           statusEl.textContent = "📡 Live Data";
 
-          if (data < 10 ||data>1000) {
+          if (data < 10) {
             display.classList.add("too-close");
             warningEl.style.display = "block";
             statusEl.textContent = "⚠️ DANGER ZONE ⚠️";
