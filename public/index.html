@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Live Distance Sensor</title>
     <style>
-      /* Your existing CSS remains unchanged */
       * {
         margin: 0;
         padding: 0;
@@ -108,6 +107,13 @@
         font-size: 0.9rem;
         opacity: 0.7;
       }
+      .slider-container {
+        margin-top: 30px;
+        text-align: left;
+      }
+      input[type="range"] {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -123,10 +129,27 @@
         <div id="status" class="status">📡 Waiting for data...</div>
       </div>
 
-      <div class="refresh-info">🔄 Auto-refreshing every 3 seconds</div>
+      <div class="refresh-info">
+        🔄 Auto-refreshing every <span id="refresh-rate">3</span> seconds
+      </div>
+
+      <div class="slider-container">
+        <label for="refresh-slider">⏱️ Adjust refresh rate</label>
+        <input
+          id="refresh-slider"
+          type="range"
+          min="1"
+          max="10"
+          value="3"
+          step="1"
+        />
+      </div>
     </div>
 
     <script>
+      let REFRESH_INTERVAL_MS = 3000;
+      let intervalId;
+
       async function fetchDistance() {
         const endpoint = "https://endpoint-delta-six.vercel.app/api/data";
         try {
@@ -171,8 +194,25 @@
         }
       }
 
-      fetchDistance();
-      setInterval(fetchDistance, 3000);
+      function startAutoRefresh() {
+        clearInterval(intervalId);
+        intervalId = setInterval(fetchDistance, REFRESH_INTERVAL_MS);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const slider = document.getElementById("refresh-slider");
+        const rateDisplay = document.getElementById("refresh-rate");
+
+        slider.addEventListener("input", () => {
+          const seconds = parseInt(slider.value);
+          REFRESH_INTERVAL_MS = seconds * 1000;
+          rateDisplay.textContent = seconds;
+          startAutoRefresh();
+        });
+
+        fetchDistance();
+        startAutoRefresh();
+      });
     </script>
   </body>
 </html>
