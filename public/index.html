@@ -177,7 +177,7 @@
           valueEl.textContent = data.toFixed(1);
           statusEl.textContent = "📡 Live Data";
 
-          if (data < 10) {
+          if (data < 10 ||data>1000) {
             display.classList.add("too-close");
             warningEl.style.display = "block";
             statusEl.textContent = "⚠️ DANGER ZONE ⚠️";
