@@ -118,11 +118,11 @@
   </head>
   <body>
     <div class="container">
-      <h1>🚀 Distance Sensor</h1>
+      <h1>Water Level Indicator</h1>
 
       <div id="display" class="distance-display pulse">
         <div id="warning" class="too-close-warning" style="display: none">
-          🚨 TOO CLOSE 🚨
+          🚨 Container is Empty! 🚨
         </div>
         <div id="value" class="distance-value">--</div>
         <div class="unit">cm</div>
@@ -174,7 +174,7 @@
             return;
           }
 
-          if (data < 10 || data > 1000) {
+          if (data>5) {
             valueEl.textContent = "--";
             statusEl.textContent = "⚠️ DANGER ZONE ⚠️";
             display.classList.add("too-close");
